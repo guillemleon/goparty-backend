@@ -1,6 +1,7 @@
 from rest_framework import serializers
 from users.models import User, UserCustomer, UserCompany
-from rest_framework.response import Response
+from rest_framework_simplejwt.views import TokenObtainPairView
+from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 
 
 class UserRegisterSerializer(serializers.ModelSerializer):
@@ -29,6 +30,7 @@ class UserCustomerRegisterSerializer(serializers.ModelSerializer):
     def create(self, validated_data):
         password = validated_data.pop('password', None)
         instance = self.Meta.model(**validated_data)
+        instance.is_active = True
 
         if password is not None:
             instance.set_password(password)
@@ -52,3 +54,12 @@ class UserCompanyRegisterSerializer(serializers.ModelSerializer):
 
         instance.save()
         return instance
+
+
+class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
+    def validate(self, attr):
+        data = super().validate(attr)
+        userProfileObj = UserCustomer.objects.get(email=self.user)
+        data['type'] = userProfileObj.type
+        data['is_active'] = userProfileObj.is_active
+        return data

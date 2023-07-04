@@ -39,13 +39,14 @@ class UserCustomerAdmin(BaseUserAdmin):
         'first_name',
         'last_name',
         'phone',
-        'type'
+        'type',
+        'is_active'
     ]
     fieldsets = (
-        (None, {'fields': ('password',)}),
+        (None, {'fields': ('password', 'is_active', 'accepted_terms',)}),
         (_('Personal info'), {
          'fields': ('first_name', 'last_name', 'email', 'phone', 'avatar')}),
-        (_('Personal info'), {
+        (_('Readonly fields'), {
             'fields': (
                 'type',
             )}),
@@ -75,10 +76,11 @@ class UserCompanyAdmin(BaseUserAdmin):
         'company_name',
         'phone',
         'cif',
-        'type'
+        'type',
+        'is_active'
     ]
     fieldsets = (
-        (None, {'fields': ('password',)}),
+        (None, {'fields': ('password', 'is_active', 'accepted_terms',)}),
         (_('Personal info'), {
          'fields': (
              'company_name',
@@ -90,7 +92,7 @@ class UserCompanyAdmin(BaseUserAdmin):
              'description',
              'avatar',
          )}),
-        (_('Personal info'), {
+        (_('Readonly fields'), {
             'fields': (
                 'type',
             )}),
