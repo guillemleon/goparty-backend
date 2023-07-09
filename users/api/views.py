@@ -1,14 +1,18 @@
-from rest_framework import status
+from rest_framework import status, permissions
 from rest_framework.views import APIView
 from rest_framework.response import Response
-from users.api.serializer import UserCustomerRegisterSerializer, UserCompanyRegisterSerializer, MyTokenObtainPairSerializer
-from users.models import UserCustomer, UserCompany
-from rest_framework_simplejwt.views import (
-    TokenObtainPairView,
+from users.api.serializer import (
+    UserCustomerRegisterSerializer,
+    UserCompanyRegisterSerializer,
+    MyTokenObtainPairSerializer
 )
+from users.models import UserCustomer, UserCompany
+from rest_framework_simplejwt.views import TokenObtainPairView
 
 
 class RegisterCustomerView(APIView):
+    permission_classes = [permissions.AllowAny]
+
     def post(self, request):
         serializer = UserCustomerRegisterSerializer(data=request.data)
         email = request.data.get('email')
@@ -25,6 +29,8 @@ class RegisterCustomerView(APIView):
 
 
 class RegisterCompanyView(APIView):
+    permission_classes = [permissions.AllowAny]
+
     def post(self, request):
         serializer = UserCompanyRegisterSerializer(data=request.data)
         email = request.data.get('email')
@@ -41,4 +47,5 @@ class RegisterCompanyView(APIView):
 
 
 class LoginView(TokenObtainPairView):
+    permission_classes = [permissions.AllowAny]
     serializer_class = MyTokenObtainPairSerializer

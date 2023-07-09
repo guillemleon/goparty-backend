@@ -1,7 +1,8 @@
 from rest_framework import serializers
 from users.models import User, UserCustomer, UserCompany
-from rest_framework_simplejwt.views import TokenObtainPairView
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
+from rest_framework import status
+from rest_framework.response import Response
 
 
 class UserRegisterSerializer(serializers.ModelSerializer):
@@ -25,7 +26,7 @@ class UserCustomerRegisterSerializer(serializers.ModelSerializer):
     class Meta:
         model = UserCustomer
         fields = ['id', 'email', 'first_name',
-                  'last_name', 'phone', 'password']
+                  'last_name', 'phone', 'password', 'accepted_terms']
 
     def create(self, validated_data):
         password = validated_data.pop('password', None)
@@ -43,7 +44,7 @@ class UserCompanyRegisterSerializer(serializers.ModelSerializer):
     class Meta:
         model = UserCompany
         fields = ['id', 'email', 'company_name',
-                  'cif', 'phone', 'password', 'country', 'address', 'description']
+                  'cif', 'phone', 'password', 'country', 'city', 'address', 'description', 'accepted_terms']
 
     def create(self, validated_data):
         password = validated_data.pop('password', None)
@@ -57,9 +58,14 @@ class UserCompanyRegisterSerializer(serializers.ModelSerializer):
 
 
 class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
-    def validate(self, attr):
-        data = super().validate(attr)
-        userProfileObj = UserCustomer.objects.get(email=self.user)
+    def validate(self, attrs):
+        data = super().validate(attrs)
+        userProfileObj = None
+        try:
+            userProfileObj = UserCustomer.objects.get(email=self.user)
+        except UserCustomer.DoesNotExist:
+            userProfileObj = UserCompany.objects.get(email=self.user)
+
         data['type'] = userProfileObj.type
         data['is_active'] = userProfileObj.is_active
         return data

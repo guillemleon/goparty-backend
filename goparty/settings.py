@@ -38,11 +38,13 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django_extensions',
     'cloudinary_storage',
     'rest_framework_simplejwt',
     'rest_framework',
     'drf_yasg',
     'users',
+    'events'
 ]
 
 MIDDLEWARE = [
@@ -125,7 +127,7 @@ REST_FRAMEWORK = {
 }
 
 SIMPLE_JWT = {
-    "ACCESS_TOKEN_LIFETIME": datetime.timedelta(minutes=1),
+    "ACCESS_TOKEN_LIFETIME": datetime.timedelta(minutes=99999),
     "REFRESH_TOKEN_LIFETIME": datetime.timedelta(days=7)
 }
 
@@ -136,6 +138,8 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # USERS
 AUTH_USER_MODEL = 'users.User'
+ACCOUNT_USERNAME_REQUIRED = False
+ACCOUNT_AUTHENTICATION_METHOD = "email"
 
 # STATIC FILES
 # Static files (CSS, JavaScript, Images)

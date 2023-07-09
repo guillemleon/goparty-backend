@@ -8,19 +8,13 @@ from users.models import User, UserCustomer, UserCompany
 class UserAdmin(BaseUserAdmin):
     list_display = [
         'email',
-        'first_name',
-        'last_name',
-        'date_joined',
     ]
     fieldsets = (
         (None, {'fields': ('password',)}),
-        (_('Personal info'), {
-         'fields': ('first_name', 'last_name', 'email')}),
         (_('Permissions'), {'fields': ('is_active', 'is_staff',
          'is_superuser', 'groups', 'user_permissions')}),
         (_('Important dates'), {'fields': ('last_login', 'date_joined')})
     )
-    readonly_fields = ['date_joined', 'last_login']
     add_fieldsets = (
         (None, {
             'fields': (
@@ -30,6 +24,10 @@ class UserAdmin(BaseUserAdmin):
             ),
         })
     ),
+    ordering = []
+    list_filter = []
+    filter_horizontal = []
+    readonly_fields = []
 
 
 @admin.register(UserCustomer)
@@ -40,16 +38,19 @@ class UserCustomerAdmin(BaseUserAdmin):
         'last_name',
         'phone',
         'type',
-        'is_active'
+        'is_active',
+        'accepted_terms'
     ]
     fieldsets = (
-        (None, {'fields': ('password', 'is_active', 'accepted_terms',)}),
+        (None, {'fields': ('password', 'accepted_terms',)}),
         (_('Personal info'), {
-         'fields': ('first_name', 'last_name', 'email', 'phone', 'avatar')}),
+         'fields': ('first_name', 'last_name', 'email', 'phone', 'avatar',)}),
         (_('Readonly fields'), {
             'fields': (
                 'type',
             )}),
+        (_('Permissions'), {'fields': ('is_active', 'is_staff')}),
+        (_('Important dates'), {'fields': ('last_login', 'date_joined')})
     )
     readonly_fields = ['type']
     add_fieldsets = (
@@ -77,10 +78,11 @@ class UserCompanyAdmin(BaseUserAdmin):
         'phone',
         'cif',
         'type',
-        'is_active'
+        'is_active',
+        'accepted_terms'
     ]
     fieldsets = (
-        (None, {'fields': ('password', 'is_active', 'accepted_terms',)}),
+        (None, {'fields': ('password', 'accepted_terms',)}),
         (_('Personal info'), {
          'fields': (
              'company_name',
@@ -88,6 +90,7 @@ class UserCompanyAdmin(BaseUserAdmin):
              'email',
              'phone',
              'country',
+             'city',
              'address',
              'description',
              'avatar',
@@ -96,6 +99,8 @@ class UserCompanyAdmin(BaseUserAdmin):
             'fields': (
                 'type',
             )}),
+        (_('Permissions'), {'fields': ('is_active', 'is_staff')}),
+        (_('Important dates'), {'fields': ('last_login', 'date_joined')})
     )
     readonly_fields = ['type']
     add_fieldsets = (
