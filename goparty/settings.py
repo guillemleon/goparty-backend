@@ -26,7 +26,8 @@ SECRET_KEY = 'django-insecure-)xv7qdd+pz5axkddk4$w+a_r0zu8b&@f^-82@x&vynf2lmi#+e
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['192.168.1.33']
+""" ALLOWED_HOSTS = ['192.168.1.33'] """
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -56,6 +57,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware'
 ]
 
 ROOT_URLCONF = 'goparty.urls'
@@ -158,6 +160,7 @@ STATICFILES_DIRS = (
 )
 
 DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.RawMediaCloudinaryStorage'
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 # CLOUDINARY
 CLOUDINARY_STORAGE = {
