@@ -160,7 +160,6 @@ STATICFILES_DIRS = (
 )
 
 DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.RawMediaCloudinaryStorage'
-STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 # CLOUDINARY
 CLOUDINARY_STORAGE = {
