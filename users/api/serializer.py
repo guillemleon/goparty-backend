@@ -69,3 +69,11 @@ class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
         data['type'] = userProfileObj.type
         data['is_active'] = userProfileObj.is_active
         return data
+
+
+class UserCompanySerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = UserCompany
+        fields = ['id', 'company_name', 'country',
+                  'city', 'address', 'description', 'avatar']
